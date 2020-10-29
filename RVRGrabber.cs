@@ -119,9 +119,9 @@ namespace RVRMonitor
             string[] runways = data.Split(new[] { "<tr>" }, StringSplitOptions.None);
 
             Panel output = new Panel();
-            output.Location = new System.Drawing.Point(13, 115);
+            output.Location = new Point(13, 115);
             output.Name = "panel2";
-            output.Size = new System.Drawing.Size(433, 383);
+            output.Size = new Size(433, 383);
             output.TabIndex = 3;
 
             Label label;
@@ -207,29 +207,30 @@ namespace RVRMonitor
                 i++;
 
                 label = new Label();
-                label.ForeColor = Color.White;
                 label.Tag = i.ToString();
                 label.Text = td;
-                label.AutoSize = true;
+                label.Size = new Size(50, 17);
                 label.Location = new Point(x + 50, y);
+                label = setRVRColor(label);
                 output.Controls.Add(label);
+
                 i++;
 
                 label = new Label();
-                label.ForeColor = Color.White;
                 label.Tag = i.ToString();
                 label.Text = mp;
-                label.AutoSize = true;
+                label.Size = new Size(50, 17);
                 label.Location = new Point(x + 100, y);
+                label = setRVRColor(label);
                 output.Controls.Add(label);
                 i++;
 
                 label = new Label();
-                label.ForeColor = Color.White;
                 label.Tag = i.ToString();
                 label.Text = ro;
-                label.AutoSize = true;
+                label.Size = new Size(50, 17);
                 label.Location = new Point(x + 150, y);
+                label = setRVRColor(label);
                 output.Controls.Add(label);
                 i++;
 
@@ -241,8 +242,47 @@ namespace RVRMonitor
             //Console.WriteLine(data);
             //Console.WriteLine(airportInfo);
             //Console.WriteLine(dateTime);
-
             return output;
+        }
+        private static Label setRVRColor(Label label)
+        {
+            string text = label.Text.Replace("▲", "").Replace("▼", "").Replace(">", "");
+            if (label.Text == "")
+            {
+                label.ForeColor = Color.White;
+                return label;
+            }
+            else if (int.Parse(text) == 6000 && label.Text.Contains(">"))
+            {
+                label.BackColor = Color.FromArgb(0, 255, 0);
+                label.ForeColor = Color.Black;
+                return label;
+            }
+            else if (int.Parse(text) <= 6000 && int.Parse(text) >= 2500)
+            {
+                label.BackColor = Color.FromArgb(255, 255, 0);
+                label.ForeColor = Color.Black;
+                return label;
+            }
+            else if (int.Parse(text) <= 2400 && int.Parse(text) >= 1300)
+            {
+                label.BackColor = Color.FromArgb(255, 189, 0);
+                label.ForeColor = Color.Black;
+                return label;
+            }
+            else if (int.Parse(text) <= 1200 && int.Parse(text) >= 800)
+            {
+                label.BackColor = Color.FromArgb(255, 123, 0);
+                label.ForeColor = Color.Black;
+                return label;
+            }
+            else if (int.Parse(text) <= 700 && int.Parse(text) >= 0)
+            {
+                label.BackColor = Color.FromArgb(255, 0, 0);
+                label.ForeColor = Color.White;
+                return label;
+            }
+            return label;
         }
     }
 }

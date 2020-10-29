@@ -23,9 +23,10 @@ namespace RVRMonitor
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
 
-        private Timer timer;
+        private readonly Timer timer;
 
-        public static string airport;
+        public static string airport = "Select An Airport";
+        public Panel rvrPanel;
 
         public Form1()
         {
@@ -33,7 +34,7 @@ namespace RVRMonitor
             refreshAirportList();
             timer = new Timer
             {
-                Interval = 60000
+                Interval = 2000
             };
             timer.Tick += timer_tick;
             timer.Start();
@@ -88,16 +89,18 @@ namespace RVRMonitor
         private void btnLoadRVR_Click(object sender, EventArgs e)
         {
             airport = comboBoxAptList.SelectedItem.ToString();
-            Panel rvrPanel = RVRGrabber.getRVRData(airport);
+            rvrPanel = RVRGrabber.getRVRData(airport);
             Controls.Remove(panel2);
+            disposePanel2Controls();
             panel2 = rvrPanel;
             Controls.Add(panel2);
         }
 
         private void btnRefreshRVR_Click(object sender, EventArgs e)
         {
-            Panel rvrPanel = RVRGrabber.getRVRData(airport);
+            rvrPanel = RVRGrabber.getRVRData(airport);
             Controls.Remove(panel2);
+            disposePanel2Controls();
             panel2 = rvrPanel;
             Controls.Add(panel2);
         }
@@ -105,6 +108,15 @@ namespace RVRMonitor
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             TopMost = checkBox1.Checked;
+        }
+
+        private void disposePanel2Controls()
+        {
+            List<Control> c = panel2.Controls.OfType<TextBox>().Cast<Control>().ToList();
+            foreach (Control item in c)
+            {
+                item.Dispose();
+            }
         }
     }
 }
