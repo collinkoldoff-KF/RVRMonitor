@@ -10,4 +10,5 @@ The information contained in this application is to be used for flight simulatio
 It is not intended nor should it be used for real world navigation. 
 This application is in no way affiliated with the FAA.
 
-FAA RVR Status Monitor https://rvr.data.faa.gov/
+FAA RVR Status Monitor: https://rvr.data.faa.gov/
+Example image: https://prnt.sc/v9e2q0
