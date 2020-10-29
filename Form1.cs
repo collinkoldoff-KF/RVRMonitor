@@ -34,7 +34,7 @@ namespace RVRMonitor
             refreshAirportList();
             timer = new Timer
             {
-                Interval = 2000
+                Interval = 60000
             };
             timer.Tick += timer_tick;
             timer.Start();
