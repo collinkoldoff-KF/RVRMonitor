@@ -28,18 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.btnRefreshRVR = new RVRMonitor.FlatButton();
-            this.btnLoadRVR = new RVRMonitor.FlatButton();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxAptList = new System.Windows.Forms.ComboBox();
-            this.toolbarLabel = new RVRMonitor.TransparentClickLabel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnRefreshRVR = new RVRMonitor.FlatButton();
+            this.btnLoadRVR = new RVRMonitor.FlatButton();
             this.pnlToolbar = new RVRMonitor.TransparentClickPanel();
+            this.flatButton1 = new RVRMonitor.FlatButton();
+            this.toolbarLabel = new RVRMonitor.TransparentClickLabel();
             this.btnMinimize = new RVRMonitor.FlatButton();
             this.btnClose = new RVRMonitor.FlatButton();
-            this.flatButton1 = new RVRMonitor.FlatButton();
             this.panel1.SuspendLayout();
             this.pnlToolbar.SuspendLayout();
             this.SuspendLayout();
@@ -67,6 +68,38 @@
             this.checkBox1.Text = "Always On Top";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label1.Location = new System.Drawing.Point(3, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(87, 17);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Airport Code";
+            // 
+            // comboBoxAptList
+            // 
+            this.comboBoxAptList.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxAptList.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxAptList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.comboBoxAptList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBoxAptList.ForeColor = System.Drawing.Color.White;
+            this.comboBoxAptList.Items.AddRange(new object[] {
+            "Select An Airport"});
+            this.comboBoxAptList.Location = new System.Drawing.Point(3, 33);
+            this.comboBoxAptList.Name = "comboBoxAptList";
+            this.comboBoxAptList.Size = new System.Drawing.Size(132, 24);
+            this.comboBoxAptList.TabIndex = 0;
+            this.comboBoxAptList.Text = "Select An Airport";
+            // 
+            // panel2
+            // 
+            this.panel2.Location = new System.Drawing.Point(13, 138);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(433, 383);
+            this.panel2.TabIndex = 3;
             // 
             // btnRefreshRVR
             // 
@@ -106,30 +139,40 @@
             this.btnLoadRVR.Text = "Load RVR Data";
             this.btnLoadRVR.Click += new System.EventHandler(this.btnLoadRVR_Click);
             // 
-            // label1
+            // pnlToolbar
             // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label1.Location = new System.Drawing.Point(3, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(87, 17);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Airport Code";
+            this.pnlToolbar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(44)))), ((int)(((byte)(46)))));
+            this.pnlToolbar.BorderColor = System.Drawing.Color.Transparent;
+            this.pnlToolbar.Controls.Add(this.flatButton1);
+            this.pnlToolbar.Controls.Add(this.toolbarLabel);
+            this.pnlToolbar.Controls.Add(this.btnMinimize);
+            this.pnlToolbar.Controls.Add(this.btnClose);
+            this.pnlToolbar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlToolbar.Location = new System.Drawing.Point(0, 0);
+            this.pnlToolbar.Margin = new System.Windows.Forms.Padding(4);
+            this.pnlToolbar.Name = "pnlToolbar";
+            this.pnlToolbar.Size = new System.Drawing.Size(457, 64);
+            this.pnlToolbar.TabIndex = 1;
             // 
-            // comboBoxAptList
+            // flatButton1
             // 
-            this.comboBoxAptList.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboBoxAptList.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBoxAptList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.comboBoxAptList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBoxAptList.ForeColor = System.Drawing.Color.White;
-            this.comboBoxAptList.Items.AddRange(new object[] {
-            "Select An Airport"});
-            this.comboBoxAptList.Location = new System.Drawing.Point(3, 33);
-            this.comboBoxAptList.Name = "comboBoxAptList";
-            this.comboBoxAptList.Size = new System.Drawing.Size(132, 24);
-            this.comboBoxAptList.TabIndex = 0;
-            this.comboBoxAptList.Text = "Select An Airport";
+            this.flatButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(206)))));
+            this.flatButton1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
+            this.flatButton1.Clicked = false;
+            this.flatButton1.ClickedColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(206)))));
+            this.flatButton1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.flatButton1.DisabledTextColor = System.Drawing.Color.DarkGray;
+            this.flatButton1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.flatButton1.ForeColor = System.Drawing.Color.White;
+            this.flatButton1.Location = new System.Drawing.Point(363, 20);
+            this.flatButton1.Margin = new System.Windows.Forms.Padding(4);
+            this.flatButton1.Name = "flatButton1";
+            this.flatButton1.Pushed = false;
+            this.flatButton1.PushedColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(206)))));
+            this.flatButton1.Size = new System.Drawing.Size(23, 25);
+            this.flatButton1.TabIndex = 2;
+            this.flatButton1.Text = "?";
+            this.flatButton1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.flatButton1_Click);
             // 
             // toolbarLabel
             // 
@@ -145,28 +188,6 @@
             this.toolbarLabel.TabIndex = 5;
             this.toolbarLabel.Text = "RVR Monitor";
             this.toolbarLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // panel2
-            // 
-            this.panel2.Location = new System.Drawing.Point(13, 138);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(433, 383);
-            this.panel2.TabIndex = 3;
-            // 
-            // pnlToolbar
-            // 
-            this.pnlToolbar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(44)))), ((int)(((byte)(46)))));
-            this.pnlToolbar.BorderColor = System.Drawing.Color.Transparent;
-            this.pnlToolbar.Controls.Add(this.flatButton1);
-            this.pnlToolbar.Controls.Add(this.toolbarLabel);
-            this.pnlToolbar.Controls.Add(this.btnMinimize);
-            this.pnlToolbar.Controls.Add(this.btnClose);
-            this.pnlToolbar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlToolbar.Location = new System.Drawing.Point(0, 0);
-            this.pnlToolbar.Margin = new System.Windows.Forms.Padding(4);
-            this.pnlToolbar.Name = "pnlToolbar";
-            this.pnlToolbar.Size = new System.Drawing.Size(457, 64);
-            this.pnlToolbar.TabIndex = 1;
             // 
             // btnMinimize
             // 
@@ -207,25 +228,6 @@
             this.btnClose.Text = "X";
             this.btnClose.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnClose_Click);
             // 
-            // flatButton1
-            // 
-            this.flatButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(206)))));
-            this.flatButton1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
-            this.flatButton1.Clicked = false;
-            this.flatButton1.ClickedColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(206)))));
-            this.flatButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.flatButton1.DisabledTextColor = System.Drawing.Color.DarkGray;
-            this.flatButton1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.flatButton1.ForeColor = System.Drawing.Color.White;
-            this.flatButton1.Location = new System.Drawing.Point(363, 20);
-            this.flatButton1.Margin = new System.Windows.Forms.Padding(4);
-            this.flatButton1.Name = "flatButton1";
-            this.flatButton1.Pushed = false;
-            this.flatButton1.Size = new System.Drawing.Size(23, 25);
-            this.flatButton1.TabIndex = 2;
-            this.flatButton1.Text = "?";
-            this.flatButton1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.flatButton1_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -236,6 +238,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnlToolbar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
