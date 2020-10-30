@@ -31,11 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.btnRefreshRVR = new RVRMonitor.FlatButton();
+            this.btnLoadRVR = new RVRMonitor.FlatButton();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxAptList = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.btnRefreshRVR = new RVRMonitor.FlatButton();
-            this.btnLoadRVR = new RVRMonitor.FlatButton();
             this.pnlToolbar = new RVRMonitor.TransparentClickPanel();
             this.flatButton1 = new RVRMonitor.FlatButton();
             this.toolbarLabel = new RVRMonitor.TransparentClickLabel();
@@ -68,38 +68,6 @@
             this.checkBox1.Text = "Always On Top";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label1.Location = new System.Drawing.Point(3, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(87, 17);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Airport Code";
-            // 
-            // comboBoxAptList
-            // 
-            this.comboBoxAptList.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboBoxAptList.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBoxAptList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.comboBoxAptList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBoxAptList.ForeColor = System.Drawing.Color.White;
-            this.comboBoxAptList.Items.AddRange(new object[] {
-            "Select An Airport"});
-            this.comboBoxAptList.Location = new System.Drawing.Point(3, 33);
-            this.comboBoxAptList.Name = "comboBoxAptList";
-            this.comboBoxAptList.Size = new System.Drawing.Size(132, 24);
-            this.comboBoxAptList.TabIndex = 0;
-            this.comboBoxAptList.Text = "Select An Airport";
-            // 
-            // panel2
-            // 
-            this.panel2.Location = new System.Drawing.Point(13, 138);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(433, 383);
-            this.panel2.TabIndex = 3;
             // 
             // btnRefreshRVR
             // 
@@ -138,6 +106,38 @@
             this.btnLoadRVR.TabIndex = 0;
             this.btnLoadRVR.Text = "Load RVR Data";
             this.btnLoadRVR.Click += new System.EventHandler(this.btnLoadRVR_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label1.Location = new System.Drawing.Point(3, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(87, 17);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Airport Code";
+            // 
+            // comboBoxAptList
+            // 
+            this.comboBoxAptList.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxAptList.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxAptList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.comboBoxAptList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBoxAptList.ForeColor = System.Drawing.Color.White;
+            this.comboBoxAptList.Items.AddRange(new object[] {
+            "Select An Airport"});
+            this.comboBoxAptList.Location = new System.Drawing.Point(3, 33);
+            this.comboBoxAptList.Name = "comboBoxAptList";
+            this.comboBoxAptList.Size = new System.Drawing.Size(132, 24);
+            this.comboBoxAptList.TabIndex = 0;
+            this.comboBoxAptList.Text = "Select An Airport";
+            // 
+            // panel2
+            // 
+            this.panel2.Location = new System.Drawing.Point(13, 138);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(433, 383);
+            this.panel2.TabIndex = 3;
             // 
             // pnlToolbar
             // 
@@ -230,8 +230,8 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(24)))));
             this.ClientSize = new System.Drawing.Size(457, 533);
             this.Controls.Add(this.panel2);
