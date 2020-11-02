@@ -26,12 +26,14 @@ namespace RVRMonitor
         private readonly Timer timer;
 
         public static string airport = "Select An Airport";
+        public static Airport[] airportList;
+        public static bool airportListCached = false;
         public Panel rvrPanel;
 
         public Form1()
         {
             InitializeComponent();
-            refreshAirportList();
+            Task.Run(() => refreshAirportList());
             timer = new Timer
             {
                 Interval = 60000
@@ -77,12 +79,19 @@ namespace RVRMonitor
             }
         }
 
-        private void refreshAirportList()
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        private async void refreshAirportList()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            string[] aptList = RVRGrabber.getAirports();
-            foreach(string apt in aptList)
+            RVRGrabber rvrGrabber = new RVRGrabber();
+            rvrGrabber.getAirports();
+
+            foreach(Airport apt in airportList)
             {
-                comboBoxAptList.Items.Add(apt);
+                Invoke((MethodInvoker)delegate ()
+                {
+                    comboBoxAptList.Items.Add(apt.code);
+                });
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -14,7 +15,8 @@ namespace RVRMonitor
 {
     class RVRGrabber
     {
-        public static string[] getAirports() {
+        public void getAirports()
+        {
             string urlAddress = "https://rvr.data.faa.gov/cgi-bin/rvr-status.pl";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
@@ -39,10 +41,10 @@ namespace RVRMonitor
             }
             else
             {
-                return new string[] { };
+                return;
             }
 
-            if (data == "") return new string[] { };
+            if (data == "") return;
             try
             {
                 data = data.Split(new[] { "RVR Airports</th></tr>\n" }, StringSplitOptions.None)[1];
@@ -53,30 +55,98 @@ namespace RVRMonitor
             }
             catch
             {
-                return new string[] { };
+                return;
             }
 
             string[] rvrList = data.Split(new[] { "<td" }, StringSplitOptions.None);
 
             string[] aptList = new string[] { };
 
+            Airport[] airportsList = new Airport[] { };
+
+            Task[] tasks = new Task[] { };
+
             foreach (string apt in rvrList)
             {
-                try
+                Task task = new Task(delegate
                 {
-                    string aptName = apt;
-                    aptName = aptName.Split(new[] { "&rrate=medium&layout=2x2&gifsize=large&fontsize=large&fs=lg\"><b>" }, StringSplitOptions.None)[1];
-                    aptName = aptName.Split('<')[0];
-                    Array.Resize(ref aptList, aptList.Length + 1);
-                    aptList[aptList.Length - 1] = aptName;
-                }
-                catch
-                {
-                    continue;
-                }
+                    try
+                    {
+                        string aptName = apt;
+                        aptName = aptName.Split(new[] { "&rrate=medium&layout=2x2&gifsize=large&fontsize=large&fs=lg\"><b>" }, StringSplitOptions.None)[1];
+                        aptName = aptName.Split('<')[0];
+
+                        Airport airport = new Airport(aptName, getRunwaysList(aptName));
+
+                        Array.Resize(ref airportsList, airportsList.Length + 1);
+                        airportsList[airportsList.Length - 1] = airport;
+                    }
+                    catch
+                    {
+
+                    }
+                });
+                Array.Resize(ref tasks, tasks.Length + 1);
+                tasks[tasks.Length - 1] = task;
+                task.Start();
+            }
+            Task.WaitAll(tasks);
+
+            // Sort the airportList array
+            Array.Sort(airportsList, new AirportComparer());
+
+            Debug.WriteLine("Airport List Cached");
+            Form1.airportList = airportsList;
+            Form1.airportListCached = true;
+        }
+        public string[] getRunwaysList(string apt)
+        {
+            if (apt == "Select An Airport") return new string[0];
+            string urlAddress = "https://rvr.data.faa.gov/cgi-bin/rvr-details.pl?content=table&airport=" + apt + "&rrate=medium&layout=2x2&gifsize=large&fontsize=large&fs=lg&cache_this=ct1602390244";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            string data = null;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                Stream receiveStream = response.GetResponseStream();
+                StreamReader readStream = null;
+
+                if (string.IsNullOrWhiteSpace(response.CharacterSet))
+                    readStream = new StreamReader(receiveStream);
+                else
+                    readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+
+                data = readStream.ReadToEnd();
+
+                response.Close();
+                readStream.Close();
+            }
+            else
+            {
+                return new string[0];
             }
 
-            return aptList;
+            if (data == null) return new string[0];
+
+            data = data.Split(new[] { "<TH>&nbsp;E&nbsp</TH><TH>&nbsp;C&nbsp</TH></TR>" }, StringSplitOptions.None)[1].Split(new[] { "</table></font>" }, StringSplitOptions.None)[0];
+
+            string[] runways = data.Split(new[] { "<tr>" }, StringSplitOptions.None);
+            string[] runwayList = new string[] { };
+
+            foreach (string rwy in runways)
+            {
+                if (rwy == runways[0]) continue;
+                string[] rvrList = rwy.Split(new[] { "<td align=\"center\">" }, StringSplitOptions.None);
+                string runway = rvrList[0].Replace("<th>", "").Replace("</th>", "").Trim();
+
+                Array.Resize(ref runwayList, runwayList.Length + 1);
+                runwayList[runwayList.Length - 1] = runway;
+            }
+
+            return runwayList;
         }
         public static Panel getRVRData(string apt)
         {
@@ -283,6 +353,13 @@ namespace RVRMonitor
                 return label;
             }
             return label;
+        }
+    }
+    class AirportComparer : IComparer
+    {
+        public int Compare(object x, object y)
+        {
+            return (new CaseInsensitiveComparer()).Compare(((Airport)x).code, ((Airport)y).code);
         }
     }
 }
