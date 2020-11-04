@@ -198,7 +198,7 @@ namespace RVRMonitor
             output.AutoScroll = true;
             output.Location = new Point(0, ((Form1.rvrIndex) * 40));
             output.Name = "panel2";
-            output.Size = new Size(340, 40);
+            output.Size = new Size(420, 40);
             output.TabIndex = 3;
             output.Tag = Form1.rvrIndex.ToString();
 
@@ -218,7 +218,7 @@ namespace RVRMonitor
             labelRwy.ForeColor = Color.White;
             labelRwy.Text = runway;
             labelRwy.AutoSize = true;
-            labelRwy.Location = new Point(40, 0);
+            labelRwy.Location = new Point(60, 0);
             output.Controls.Add(labelRwy);
 
             foreach (string rwyInfo in runways)
@@ -234,20 +234,20 @@ namespace RVRMonitor
 
                     labelTd = new Label();
                     labelTd.Text = td;
-                    labelTd.Location = new Point(75, 0);
+                    labelTd.Location = new Point(110, 0);
                     labelTd = createLabel(labelTd);
                     output.Controls.Add(labelTd);
 
 
                     labelMp = new Label();
                     labelMp.Text = mp;
-                    labelMp.Location = new Point(150, 0);
+                    labelMp.Location = new Point(185, 0);
                     labelMp = createLabel(labelMp);
                     output.Controls.Add(labelMp);
 
                     labelRo = new Label();
                     labelRo.Text = ro;
-                    labelRo.Location = new Point(225, 0);
+                    labelRo.Location = new Point(260, 0);
                     labelRo = createLabel(labelRo);
                     output.Controls.Add(labelRo);
 
@@ -263,7 +263,6 @@ namespace RVRMonitor
             label.Size = new Size(75, 30);
             label.TextAlign = ContentAlignment.TopCenter;
             label.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label.TextAlign = ContentAlignment.TopCenter;
 
             if (label.Text == "" || label.Text == "FFF")
             {
