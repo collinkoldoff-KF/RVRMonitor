@@ -138,12 +138,12 @@ namespace RVRMonitor
                     btnDeleteRVR.DisabledTextColor = Color.DarkGray;
                     btnDeleteRVR.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
                     btnDeleteRVR.ForeColor = Color.White;
-                    btnDeleteRVR.Location = new Point(350, 0);
+                    btnDeleteRVR.Location = new Point(300, 0);
                     btnDeleteRVR.Margin = new Padding(4);
                     btnDeleteRVR.Name = "btnDeleteRVR";
                     btnDeleteRVR.Pushed = false;
                     btnDeleteRVR.PushedColor = Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-                    btnDeleteRVR.Size = new Size(28, 30);
+                    btnDeleteRVR.Size = new Size(20, 30);
                     btnDeleteRVR.TabIndex = 2;
                     btnDeleteRVR.Text = "X";
                     btnDeleteRVR.MouseClick += new MouseEventHandler(btnDeleteRVR_Click);
@@ -173,6 +173,7 @@ namespace RVRMonitor
                 }
                 btnRefreshRVR_Click(null, null);
                 panel3.Location = new Point(0, (totalRwys * 40));
+                btnRefreshRVR_Click(null, null);
             }
         }
 
@@ -265,21 +266,23 @@ namespace RVRMonitor
         }
         private static void removeIndex(int index)
         {
-            string[] oldArray = rvrList;
-            string[] newArray = new string[oldArray.Length - 1];
+            try {
+                string[] oldArray = rvrList;
+                string[] newArray = new string[oldArray.Length - 1];
 
-            int i = 0;
-            int j = 0;
-            while (i < oldArray.Length)
-            {
-                if (i != index)
+                int i = 0;
+                int j = 0;
+                while (i < oldArray.Length)
                 {
-                    newArray[j] = oldArray[i];
-                    j++;
+                    if (i != index)
+                    {
+                        newArray[j] = oldArray[i];
+                        j++;
+                    }
+                    i++;
                 }
-                i++;
-            }
-            rvrList = newArray;
+                rvrList = newArray;
+            } catch { }
         }
     }
 }
