@@ -148,10 +148,20 @@ namespace RVRMonitor
 
             return runwayList;
         }
-        public static Panel getRVRData(string apt)
+        public static Panel getRVRData(string aptRwy)
         {
-            if (apt == "Select An Airport") return new Panel(); ;
-            string urlAddress = "https://rvr.data.faa.gov/cgi-bin/rvr-details.pl?content=table&airport=" + apt + "&rrate=medium&layout=2x2&gifsize=large&fontsize=large&fs=lg&cache_this=ct1602390244";
+            string airport, runway;
+            try
+            {
+                airport = aptRwy.Split('.')[0];
+                runway = aptRwy.Split('.')[1];
+            }
+            catch
+            {
+                return new Panel();
+            }
+            if (airport == "Select An Airport") return new Panel();
+            string urlAddress = "https://rvr.data.faa.gov/cgi-bin/rvr-details.pl?content=table&airport=" + airport + "&rrate=medium&layout=2x2&gifsize=large&fontsize=large&fs=lg&cache_this=ct1602390244";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -161,8 +171,7 @@ namespace RVRMonitor
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 Stream receiveStream = response.GetResponseStream();
-                StreamReader readStream = null;
-
+                StreamReader readStream;
                 if (string.IsNullOrWhiteSpace(response.CharacterSet))
                     readStream = new StreamReader(receiveStream);
                 else
@@ -179,180 +188,126 @@ namespace RVRMonitor
             }
 
             if (data == null) return new Panel();
-            data = data.Split(new[] { "<b>RVR DETAILS</b></font>" }, StringSplitOptions.None)[1];
-
-            string airportInfo = data.Split(new[] { "<strong>" }, StringSplitOptions.None)[1].Split(new[] { "</strong>" }, StringSplitOptions.None)[0].Replace("&nbsp", "");
-            string dateTime = data.Split(new[] { "<strong><table><tr><th>" }, StringSplitOptions.None)[1].Split(new[] { "</th></tr></table></strong>" }, StringSplitOptions.None)[0].Replace("</th><th>", " ");
-
-            data = data.Split(new[] { "<TH>&nbsp;E&nbsp</TH><TH>&nbsp;C&nbsp</TH></TR>" }, StringSplitOptions.None)[1].Split(new[] { "</table></font>" }, StringSplitOptions.None)[0];
+            data = data.Split(new[] { "<b>RVR DETAILS</b></font>" }, StringSplitOptions.None)[1]
+                .Split(new[] { "<TH>&nbsp;E&nbsp</TH><TH>&nbsp;C&nbsp</TH></TR>" }, StringSplitOptions.None)[1]
+                .Split(new[] { "</table></font>" }, StringSplitOptions.None)[0];
 
             string[] runways = data.Split(new[] { "<tr>" }, StringSplitOptions.None);
 
             Panel output = new Panel();
-            output.Location = new Point(13, 115);
+            output.AutoScroll = true;
+            output.Location = new Point(0, ((Form1.rvrIndex) * 40));
             output.Name = "panel2";
-            output.Size = new Size(433, 383);
+            output.Size = new Size(420, 40);
             output.TabIndex = 3;
+            output.Tag = Form1.rvrIndex.ToString();
 
-            Label label;
+            Label labelApt, labelRwy, labelTd, labelMp, labelRo;
 
-            int x = 0;
-            int y = 0;
-            int i = 0;
+            labelApt = new Label();
+            labelApt.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelApt.ForeColor = Color.White;
+            labelApt.Text = airport;
+            labelApt.AutoSize = true;
+            labelApt.Location = new Point(5, 0);
+            output.Controls.Add(labelApt);
 
-            label = new Label();
-            label.ForeColor = Color.White;
-            label.Tag = i.ToString();
-            label.Text = airportInfo;
-            label.AutoSize = true;
-            label.Location = new Point(x, y);
-            output.Controls.Add(label);
-            i++;
-            y += 20;
 
-            label = new Label();
-            label.ForeColor = Color.White;
-            label.Tag = i.ToString();
-            label.Text = dateTime;
-            label.AutoSize = true;
-            label.Location = new Point(x, y);
-            output.Controls.Add(label);
-            i++;
-            y += 20;
+            labelRwy = new Label();
+            labelRwy.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelRwy.ForeColor = Color.White;
+            labelRwy.Text = runway;
+            labelRwy.AutoSize = true;
+            labelRwy.Location = new Point(60, 0);
+            output.Controls.Add(labelRwy);
 
-            label = new Label();
-            label.ForeColor = Color.White;
-            label.Tag = i.ToString();
-            label.Text = "RWY";
-            label.AutoSize = true;
-            label.Location = new Point(x, y);
-            output.Controls.Add(label);
-            i++;
-
-            label = new Label();
-            label.ForeColor = Color.White;
-            label.Tag = i.ToString();
-            label.Text = "TD";
-            label.AutoSize = true;
-            label.Location = new Point(x + 50, y);
-            output.Controls.Add(label);
-            i++;
-
-            label = new Label();
-            label.ForeColor = Color.White;
-            label.Tag = i.ToString();
-            label.Text = "MP";
-            label.AutoSize = true;
-            label.Location = new Point(x + 100, y);
-            output.Controls.Add(label);
-            i++;
-
-            label = new Label();
-            label.ForeColor = Color.White;
-            label.Tag = i.ToString();
-            label.Text = "RO";
-            label.AutoSize = true;
-            label.Location = new Point(x + 150, y);
-            output.Controls.Add(label);
-            i++;
-
-            y += 17;
-
-            foreach (string rwy in runways)
+            foreach (string rwyInfo in runways)
             {
-                if (rwy == runways[0]) continue;
-                string[] rvrList = rwy.Split(new[] { "<td align=\"center\">" }, StringSplitOptions.None);
-                string runway = rvrList[0].Replace("<th>", "").Replace("</th>", "").Trim();
-                string td = rvrList[1].Replace("</td>", "").Replace("&nbsp;", "").Replace("&#9650;", "▲").Replace("&#9660;", "▼").Trim();
-                string mp = rvrList[2].Replace("</td>", "").Replace("&nbsp;", "").Replace("&#9650;", "▲").Replace("&#9660;", "▼").Trim();
-                string ro = rvrList[3].Replace("</td>", "").Replace("&nbsp;", "").Replace("&#9650;", "▲").Replace("&#9660;", "▼").Trim();
+                if (rwyInfo == runways[0]) continue;
+                string[] rvrList = rwyInfo.Split(new[] { "<td align=\"center\">" }, StringSplitOptions.None);
+                string rwy = rvrList[0].Replace("<th>", "").Replace("</th>", "").Trim();
+                if (rwy == runway)
+                {
+                    string td = rvrList[1].Replace("</td>", "").Replace("&nbsp;", "").Replace("&#9650;", "▲").Replace("&#9660;", "▼").Trim();
+                    string mp = rvrList[2].Replace("</td>", "").Replace("&nbsp;", "").Replace("&#9650;", "▲").Replace("&#9660;", "▼").Trim();
+                    string ro = rvrList[3].Replace("</td>", "").Replace("&nbsp;", "").Replace("&#9650;", "▲").Replace("&#9660;", "▼").Trim();
 
-                label = new Label();
-                label.ForeColor = Color.White;
-                label.Tag = i.ToString();
-                label.Text = runway;
-                label.AutoSize = true;
-                label.Location = new Point(x, y);
-                output.Controls.Add(label);
-                i++;
+                    labelTd = new Label();
+                    labelTd.Text = td;
+                    labelTd.Location = new Point(110, 0);
+                    labelTd = createLabel(labelTd);
+                    output.Controls.Add(labelTd);
 
-                label = new Label();
-                label.Tag = i.ToString();
-                label.Text = td;
-                label.Size = new Size(50, 17);
-                label.Location = new Point(x + 50, y);
-                label = setRVRColor(label);
-                output.Controls.Add(label);
 
-                i++;
+                    labelMp = new Label();
+                    labelMp.Text = mp;
+                    labelMp.Location = new Point(185, 0);
+                    labelMp = createLabel(labelMp);
+                    output.Controls.Add(labelMp);
 
-                label = new Label();
-                label.Tag = i.ToString();
-                label.Text = mp;
-                label.Size = new Size(50, 17);
-                label.Location = new Point(x + 100, y);
-                label = setRVRColor(label);
-                output.Controls.Add(label);
-                i++;
+                    labelRo = new Label();
+                    labelRo.Text = ro;
+                    labelRo.Location = new Point(260, 0);
+                    labelRo = createLabel(labelRo);
+                    output.Controls.Add(labelRo);
 
-                label = new Label();
-                label.Tag = i.ToString();
-                label.Text = ro;
-                label.Size = new Size(50, 17);
-                label.Location = new Point(x + 150, y);
-                label = setRVRColor(label);
-                output.Controls.Add(label);
-                i++;
-
-                y += 17;
-
-                //Console.WriteLine($"Runway: {runway} Touchdown: {td} Midpoint: {mp} Rollout: {ro}");
+                    break;
+                }
             }
-
-            //Console.WriteLine(data);
-            //Console.WriteLine(airportInfo);
-            //Console.WriteLine(dateTime);
             return output;
         }
-        private static Label setRVRColor(Label label)
+        private static Label createLabel(Label label)
         {
             string text = label.Text.Replace("▲", "").Replace("▼", "").Replace(">", "");
-            if (label.Text == "")
+            label.ForeColor = Color.Black;
+            label.Size = new Size(75, 30);
+            label.TextAlign = ContentAlignment.TopCenter;
+            label.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+
+            if (label.Text == "" || label.Text == "FFF")
             {
                 label.ForeColor = Color.White;
-                return label;
             }
             else if (int.Parse(text) == 6000 && label.Text.Contains(">"))
             {
                 label.BackColor = Color.FromArgb(0, 255, 0);
-                label.ForeColor = Color.Black;
-                return label;
             }
-            else if (int.Parse(text) <= 6000 && int.Parse(text) >= 2500)
+            else if (int.Parse(text) >= 2500)
             {
                 label.BackColor = Color.FromArgb(255, 255, 0);
-                label.ForeColor = Color.Black;
-                return label;
             }
-            else if (int.Parse(text) <= 2400 && int.Parse(text) >= 1300)
+            else if (int.Parse(text) >= 1300)
             {
                 label.BackColor = Color.FromArgb(255, 189, 0);
-                label.ForeColor = Color.Black;
-                return label;
             }
-            else if (int.Parse(text) <= 1200 && int.Parse(text) >= 800)
+            else if (int.Parse(text) >= 800)
             {
                 label.BackColor = Color.FromArgb(255, 123, 0);
-                label.ForeColor = Color.Black;
-                return label;
             }
-            else if (int.Parse(text) <= 700 && int.Parse(text) >= 0)
+            else if (int.Parse(text) >= 0)
             {
                 label.BackColor = Color.FromArgb(255, 0, 0);
                 label.ForeColor = Color.White;
-                return label;
             }
             return label;
+        }
+        private static void removeIndex(int index)
+        {
+            string[] oldArray = Form1.rvrList;
+            string[] newArray = new string[oldArray.Length - 1];
+
+            int i = 0;
+            int j = 0;
+            while (i < oldArray.Length)
+            {
+                if (i != index)
+                {
+                    newArray[j] = oldArray[i];
+                    j++;
+                }
+                i++;
+            }
+            Form1.rvrList = newArray;
         }
     }
     class AirportComparer : IComparer
