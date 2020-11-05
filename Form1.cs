@@ -126,14 +126,13 @@ namespace RVRMonitor
             {
                 foreach (string aptRwy in rvrList)
                 {
-                    Debug.WriteLine(aptRwy);
                     rvrPanel = RVRGrabber.getRVRData(aptRwy);
                     rvrIndex++;
                     FlatButton btnDeleteRVR = new FlatButton();
-                    btnDeleteRVR.BackColor = Color.FromArgb(((int)(((byte)(207)))), ((int)(((byte)(94)))), ((int)(((byte)(57)))));
-                    btnDeleteRVR.BorderColor = Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
+                    btnDeleteRVR.BackColor = Color.FromArgb(207, 94, 57);
+                    btnDeleteRVR.BorderColor = Color.FromArgb(192, 57, 43);
                     btnDeleteRVR.Clicked = false;
-                    btnDeleteRVR.ClickedColor = Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(206)))));
+                    btnDeleteRVR.ClickedColor = Color.FromArgb(0, 120, 206);
                     btnDeleteRVR.Cursor = Cursors.Hand;
                     btnDeleteRVR.DisabledTextColor = Color.DarkGray;
                     btnDeleteRVR.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -142,7 +141,7 @@ namespace RVRMonitor
                     btnDeleteRVR.Margin = new Padding(4);
                     btnDeleteRVR.Name = "btnDeleteRVR";
                     btnDeleteRVR.Pushed = false;
-                    btnDeleteRVR.PushedColor = Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
+                    btnDeleteRVR.PushedColor = Color.FromArgb(231, 76, 60);
                     btnDeleteRVR.Size = new Size(20, 30);
                     btnDeleteRVR.TabIndex = 2;
                     btnDeleteRVR.Text = "X";
