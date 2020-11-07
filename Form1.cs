@@ -115,13 +115,7 @@ namespace RVRMonitor
         private void btnRefreshRVR_Click(object sender, EventArgs e)
         {
             rvrIndex = 0;
-            foreach (Control control in panel2.Controls)
-            {
-                if (control != panel3)
-                {
-                    panel2.Controls.Remove(control);
-                }
-            }
+            Panel[] panelList = new Panel[100];
             if (rvrList.Length != 0)
             {
                 foreach (string aptRwy in rvrList)
@@ -147,14 +141,27 @@ namespace RVRMonitor
                     btnDeleteRVR.Text = "X";
                     btnDeleteRVR.MouseClick += new MouseEventHandler(btnDeleteRVR_Click);
                     rvrPanel.Controls.Add(btnDeleteRVR);
-                    
-                    panel2.Controls.Add(rvrPanel);
+
+                    panelList[rvrIndex - 1] = rvrPanel;
                 }
             } else
             {
                 Panel rvrPanel = new Panel();
-                panel2.Controls.Add(rvrPanel);
+                panelList[rvrIndex - 1] = rvrPanel;
             }
+            foreach (Control control in panel2.Controls)
+            {
+                if (control != panel3)
+                {
+                    panel2.Controls.Remove(control);
+                }
+            }
+
+            foreach (Panel rvrPanelItem in panelList)
+            {
+                panel2.Controls.Add(rvrPanelItem);
+            }
+
             Controls.Remove(panel2);
             disposePanel2Controls();
             Controls.Add(panel2);
