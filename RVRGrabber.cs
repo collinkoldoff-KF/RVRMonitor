@@ -254,6 +254,7 @@ namespace RVRMonitor
                     break;
                 }
             }
+
             return output;
         }
         private static Label createLabel(Label label)
