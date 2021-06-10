@@ -17,6 +17,60 @@ namespace RVRMonitor
     {
         public void getAirports()
         {
+            string urlAddress = "https://collinkoldoff.dev/rvrmonitor/rvrdata.json";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            string data = "";
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                Stream receiveStream = response.GetResponseStream();
+                StreamReader readStream = null;
+
+                if (string.IsNullOrWhiteSpace(response.CharacterSet))
+                    readStream = new StreamReader(receiveStream);
+                else
+                    readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+
+                data = readStream.ReadToEnd();
+
+                response.Close();
+                readStream.Close();
+            }
+            else
+            {
+                return;
+            }
+
+            if (data == "") return;
+
+            data = data.Replace("[[", "");
+            data = data.Replace("]]]", "");
+
+            string[] jsonArray = data.Split(new[] { "],[" }, StringSplitOptions.RemoveEmptyEntries);
+
+            Airport[] airportsList = new Airport[] { };
+
+            foreach (string airport in jsonArray)
+            {
+                string icao = airport.Split(',')[0].Replace("\"", "");
+                List<string> runways = new List<string>(airport.Replace("\"", "").Replace("[", "").Replace("]", "").Split(','));
+                runways.RemoveAt(0);
+
+                Airport airportObj = new Airport(icao, runways.ToArray());
+
+                Array.Resize(ref airportsList, airportsList.Length + 1);
+                airportsList[airportsList.Length - 1] = airportObj;
+            }
+
+            Debug.WriteLine("Airport List Cached");
+            Form1.airportList = airportsList;
+            Form1.airportListCached = true;
+        }
+        public void getAirportsOld()
+        {
             string urlAddress = "https://rvr.data.faa.gov/cgi-bin/rvr-status.pl";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
@@ -76,7 +130,7 @@ namespace RVRMonitor
                         aptName = aptName.Split(new[] { "&rrate=medium&layout=2x2&gifsize=large&fontsize=large&fs=lg\"><b>" }, StringSplitOptions.None)[1];
                         aptName = aptName.Split('<')[0];
 
-                        Airport airport = new Airport(aptName, getRunwaysList(aptName));
+                        Airport airport = new Airport(aptName, getRunwaysListOld(aptName));
 
                         Array.Resize(ref airportsList, airportsList.Length + 1);
                         airportsList[airportsList.Length - 1] = airport;
@@ -99,7 +153,7 @@ namespace RVRMonitor
             Form1.airportList = airportsList;
             Form1.airportListCached = true;
         }
-        public string[] getRunwaysList(string apt)
+        public string[] getRunwaysListOld(string apt)
         {
             if (apt == "Select An Airport") return new string[0];
             string urlAddress = "https://rvr.data.faa.gov/cgi-bin/rvr-details.pl?content=table&airport=" + apt + "&rrate=medium&layout=2x2&gifsize=large&fontsize=large&fs=lg&cache_this=ct1602390244";
