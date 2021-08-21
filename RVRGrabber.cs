@@ -347,24 +347,6 @@ namespace RVRMonitor
             }
             return label;
         }
-        private static void removeIndex(int index)
-        {
-            string[] oldArray = Form1.rvrList;
-            string[] newArray = new string[oldArray.Length - 1];
-
-            int i = 0;
-            int j = 0;
-            while (i < oldArray.Length)
-            {
-                if (i != index)
-                {
-                    newArray[j] = oldArray[i];
-                    j++;
-                }
-                i++;
-            }
-            Form1.rvrList = newArray;
-        }
     }
     class AirportComparer : IComparer
     {

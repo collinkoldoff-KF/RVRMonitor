@@ -28,7 +28,7 @@ namespace RVRMonitor
         public static string airport = "Select An Airport";
         public static Airport[] airportList;
         public static bool airportListCached = false;
-        public static string[] rvrList = new string[] { };
+        public static List<string> rvrList = new List<string>();
         public static int totalRwys = 0;
         public static int rvrIndex = 0;
         public Panel rvrPanel;
@@ -116,7 +116,7 @@ namespace RVRMonitor
         {
             rvrIndex = 0;
             Panel[] panelList = new Panel[100];
-            if (rvrList.Length != 0)
+            if (rvrList.Count != 0)
             {
                 foreach (string aptRwy in rvrList)
                 {
@@ -133,7 +133,7 @@ namespace RVRMonitor
                     btnDeleteRVR.ForeColor = Color.White;
                     btnDeleteRVR.Location = new Point(300, 0);
                     btnDeleteRVR.Margin = new Padding(4);
-                    btnDeleteRVR.Name = "btnDeleteRVR";
+                    btnDeleteRVR.Name = rvrIndex.ToString();
                     btnDeleteRVR.Pushed = false;
                     btnDeleteRVR.PushedColor = Color.FromArgb(231, 76, 60);
                     btnDeleteRVR.Size = new Size(20, 30);
@@ -147,7 +147,13 @@ namespace RVRMonitor
             } else
             {
                 Panel rvrPanel = new Panel();
-                panelList[rvrIndex - 1] = rvrPanel;
+                try
+                {
+                    panelList[rvrIndex - 1] = rvrPanel;
+                }
+                catch
+                {
+                }
             }
             foreach (Control control in panel2.Controls)
             {
@@ -170,7 +176,7 @@ namespace RVRMonitor
         {
             if (e.Button == MouseButtons.Left)
             {
-                int index = rvrIndex - 1;
+                int index = int.Parse(((FlatButton)sender).Name) - 1;
                 removeIndex(index);
                 totalRwys--;
                 foreach (string test in rvrList)
@@ -255,8 +261,7 @@ namespace RVRMonitor
         {
             if (e.Button == MouseButtons.Left)
             {
-                Array.Resize(ref rvrList, rvrList.Length + 1);
-                rvrList[rvrList.Length - 1] = comboBoxAptList.Text + "." + comboBoxRwyList.Text;
+                rvrList.Add(comboBoxAptList.Text + "." + comboBoxRwyList.Text);
 
                 comboBoxAptList.SelectedIndex = 0;
                 comboBoxRwyList.SelectedIndex = 0;
@@ -272,23 +277,13 @@ namespace RVRMonitor
         }
         private static void removeIndex(int index)
         {
-            try {
-                string[] oldArray = rvrList;
-                string[] newArray = new string[oldArray.Length - 1];
+            try
+            {
+                rvrList.RemoveAt(index);
+            } catch
+            {
 
-                int i = 0;
-                int j = 0;
-                while (i < oldArray.Length)
-                {
-                    if (i != index)
-                    {
-                        newArray[j] = oldArray[i];
-                        j++;
-                    }
-                    i++;
-                }
-                rvrList = newArray;
-            } catch { }
+            }
         }
     }
 }
